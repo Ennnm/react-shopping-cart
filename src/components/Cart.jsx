@@ -5,7 +5,7 @@ export default function Cart({ items }) {
     return <div />;
   }
   const subTotal = items.reduce(
-    (acc, item) => Number(acc) + Number(item.price),
+    (acc, item) => Number(acc) + Number(item.price) * item.quantity,
     0,
   );
 

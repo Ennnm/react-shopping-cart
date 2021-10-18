@@ -4,6 +4,7 @@ import axios from 'axios';
 import Cart from './components/Cart.jsx';
 import Items from './components/Items.jsx';
 import ItemDetail from './components/ItemDetail.jsx';
+import AddItem from './components/AddItem.jsx';
 
 export default function App() {
   const [items, setItems] = useState([]);
@@ -11,8 +12,30 @@ export default function App() {
   const [selectedItemIndex, setSelectedItemIndex] = useState();
 
   const addToCart = (item, quantity) => {
-    const cartItem = { quantity, ...item };
-    setCart([cartItem, ...cart]);
+    const addedItem = { quantity, ...item };
+    //check if cartItem in cart
+    const getItem = cart.filter((x)=>x.name===addedItem.name)
+    if( getItem.length===0){
+      setCart([...cart, addedItem]);
+    }
+    else{
+          const updatedCart = cart.map((cartItem)=>
+    
+  {if (cartItem.name===addedItem.name)
+    {
+      console.log('in if');
+      return {...cartItem, quantity:cartItem.quantity+addedItem.quantity}
+    }
+    else{
+      console.log('in else');
+
+      return cartItem
+    }})
+    console.log('updatedCart :>> ', updatedCart);
+    
+    setCart([...updatedCart]);
+    }
+
   };
 
   const setItemDetail = (itemIndex) => {
@@ -25,6 +48,13 @@ export default function App() {
       setItems(result.data.items);
     });
   };
+  const addItems =(item)=>{
+    //name, desc, price
+    axios.put('/items', item).then((result) => {
+      console.log(result);
+      getItems();
+    });
+  }
 
   const selectedItem = items[selectedItemIndex];
 
@@ -40,6 +70,7 @@ export default function App() {
         )}
         <ItemDetail item={selectedItem} addToCart={addToCart} />
         <Cart items={cart} />
+        <AddItem  addItems={addItems}/>
       </div>
     </div>
   );

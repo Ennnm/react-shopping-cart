@@ -8,7 +8,19 @@ export default function initItemsController(db) {
     }
   };
 
+  const create = async (req, res) => {
+    const { name, description, price } = req.body;
+    try {
+      const newItem = await db.Item.create({ name, description, price });
+
+      res.send('item created');
+    }
+    catch (error) {
+      console.log('error in creation', error);
+    }
+  };
   return {
     index,
+    create,
   };
 }

@@ -8,7 +8,7 @@ export default function ItemDetail({ item, addToCart }) {
   }
 
   const handleSelectChange = (event) => {
-    setQuantity(event.target.value);
+    setQuantity(Number(event.target.value));
   };
 
   const detailAddCart = () => {
